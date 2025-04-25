@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import WidgetCard from './WidgetCard';
 import { MessageCircle, Check, CheckCheck } from 'lucide-react';
-
+import {ScrollArea} from "@/components/ui/scroll-area";
 interface ChatMessage {
   id: number;
   sender: 'Sarah' | 'Huzefa';
@@ -59,28 +59,31 @@ export default function Messaging() {
   return (
     <WidgetCard title="Messaging" icon={<MessageCircle className="w-6 h-6" />} blurLevel="md" height="h-full">
       <div className="flex flex-col h-full w-full">
-      <div className="flex-1 overflow-y-auto p-2 space-y-3 min-h-0 max-h-[calc(50vh-200px)]">
-
-          {messages.map(msg => (
-            <div
-              key={msg.id}
-              className={`flex items-end ${msg.sender === 'Sarah' ? 'justify-start' : 'justify-end'}`}
-            >
-              <div className={`relative max-w-[70%] px-4 py-2 rounded-lg text-white ${
-                msg.sender === 'Sarah' ? 'bg-gray-700' : 'bg-blue-600'
-              }`}>
-                <div className="text-sm font-medium mb-1">{msg.sender}</div>
-                <div className="text-base leading-snug">{msg.text}</div>
-                <div className="mt-1 flex items-center justify-end text-xs opacity-75 space-x-1">
-                  <span>{msg.time}</span>
-                  {msg.sender === 'Huzefa' && (
-                    msg.seen ? <CheckCheck className="w-4 h-4 text-green-400" /> : <Check className="w-4 h-4 text-gray-300" />
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
+      <ScrollArea className="flex-1 max-h-[calc(50vh-200px)]">
+  <div className="p-2 space-y-3">
+    {messages.map(msg => (
+      <div
+        key={msg.id}
+        className={`flex items-end ${msg.sender === 'Sarah' ? 'justify-start' : 'justify-end'}`}
+      >
+        <div className={`relative max-w-[70%] px-4 py-2 rounded-lg text-white ${
+          msg.sender === 'Sarah' ? 'bg-gray-700' : 'bg-blue-600'
+        }`}>
+          <div className="text-sm font-medium mb-1">{msg.sender}</div>
+          <div className="text-base leading-snug">{msg.text}</div>
+          <div className="mt-1 flex items-center justify-end text-xs opacity-75 space-x-1">
+            <span>{msg.time}</span>
+            {msg.sender === 'Huzefa' &&
+              (msg.seen
+                ? <CheckCheck className="w-4 h-4 text-green-400" />
+                : <Check className="w-4 h-4 text-gray-300" />)}
+          </div>
         </div>
+      </div>
+    ))}
+    <div ref={endRef} />
+  </div>
+</ScrollArea>
         <div className="mt-2 flex items-center p-2 border-t border-white/20">
           <input
             type="text"
